@@ -2,32 +2,36 @@ package io.dbsys.OnlineBankingSystem.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table
 public class Bank {
 
     @Id
-
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  int bankId;
     private  int bankCode;
     private  int bankBranch;
+    @OneToMany(mappedBy = "customerBranch")
+    private List<Customer> CustomersOfBranch;
+    @OneToMany(mappedBy = "employeeBranch")
+    private List<Employee> EmployeesOfBranch;
 
-    public Bank(int bankId, int bankCode, int bankBranch) {
+    @OneToMany(mappedBy = "bankBranch")
+    private List<Account> BankAccounts;
+
+    public Bank(){
+
+    }
+
+    public Bank(int bankCode, int bankBranch) {
         this.bankCode = bankCode;
         this.bankBranch = bankBranch;
     }
 
-    private int generateId() {
-        return (int) (System.currentTimeMillis() % Integer.MAX_VALUE);
-    }
-
     public int getBankId() {
         return bankId;
-    }
-
-    public void setBankId(int bankId) {
-        this.bankId = bankId;
     }
 
     public int getBankCode() {

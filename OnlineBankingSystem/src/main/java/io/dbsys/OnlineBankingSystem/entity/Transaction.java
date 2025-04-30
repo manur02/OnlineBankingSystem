@@ -1,25 +1,39 @@
 package io.dbsys.OnlineBankingSystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.dbsys.OnlineBankingSystem.enums.*;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
 import java.util.Date;
 
+@Entity
+@Table
 public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int transactionId;
+
+    @Enumerated(EnumType.STRING)
     private TransactionType type;
-    private Account account;
-    private Account recipient;
+
+    @ManyToOne
+    @JoinColumn(name = "account_id")
+    @JsonManagedReference
+    private Account account; // Sender
+
+    @ManyToOne
+    @JoinColumn(name = "recipient_id", nullable = true)
+    @JsonManagedReference
+    private Account recipient; // Receiver
+
     private double amount;
     private Date dateOfTransaction;
 
+    public Transaction() {
+    }
 
-    public Transaction(int transactionId, TransactionType type, Account account, Account recipient, double amount) {
-        this.transactionId = transactionId;
+    public Transaction(TransactionType type, Account account, Account recipient, double amount) {
         this.type = type;
         this.account = account;
         this.recipient = recipient;

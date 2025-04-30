@@ -1,41 +1,43 @@
 package io.dbsys.OnlineBankingSystem.dto;
 
-import io.dbsys.OnlineBankingSystem.enums.AccountStatus;
-import jakarta.persistence.Column;
+import io.dbsys.OnlineBankingSystem.enums.EmployeeType;
 
-public class CustomerDto {
 
+public class EmployeeDto {
+
+
+    private EmployeeType employeeType;
     private String firstName;
     private String lastName;
     private String address;
-    @Column(unique = true)
     private Long phoneNumber;
-    @Column(unique = true)
     private String email;
     private String password;
-    private AccountStatus status;
-    private int customerBranchId;  // Only the Bank ID, not the full Bank object
+    private Integer employeeBranchId;  // Instead of Bank object, we pass Bank ID
 
-    // ====== Constructors ======
+    // Constructors
+    public EmployeeDto() {}
 
-    public CustomerDto() {
-        // No-args constructor (needed for Spring to deserialize JSON)
-    }
-
-    public CustomerDto(String firstName, String lastName, String address, Long phoneNumber,
-                       String email, String password, AccountStatus status, int customerBranchId) {
+    public EmployeeDto(EmployeeType employeeType, String firstName, String lastName, String address,
+                       Long phoneNumber, String email, String password, Integer employeeBranchId) {
+        this.employeeType = employeeType;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
         this.phoneNumber = phoneNumber;
-
         this.email = email;
         this.password = password;
-        this.status = status;
-        this.customerBranchId = customerBranchId;
+        this.employeeBranchId = employeeBranchId;
     }
 
-    // ====== Getters and Setters ======
+    // Getters and Setters
+    public EmployeeType getEmployeeType() {
+        return employeeType;
+    }
+
+    public void setEmployeeType(EmployeeType employeeType) {
+        this.employeeType = employeeType;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -85,19 +87,11 @@ public class CustomerDto {
         this.password = password;
     }
 
-    public AccountStatus getStatus() {
-        return status;
+    public Integer getEmployeeBranchId() {
+        return employeeBranchId;
     }
 
-    public void setStatus(AccountStatus status) {
-        this.status = status;
-    }
-
-    public int getCustomerBranchId() {
-        return customerBranchId;
-    }
-
-    public void setCustomerBranchId(int customerBranchId) {
-        this.customerBranchId = customerBranchId;
+    public void setEmployeeBranchId(Integer employeeBranchId) {
+        this.employeeBranchId = employeeBranchId;
     }
 }

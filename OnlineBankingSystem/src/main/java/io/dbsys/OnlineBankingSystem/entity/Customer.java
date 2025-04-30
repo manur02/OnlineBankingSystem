@@ -1,30 +1,47 @@
 package io.dbsys.OnlineBankingSystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.dbsys.OnlineBankingSystem.enums.AccountStatus;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
 
 @Entity
-
+@Table
 public class Customer {
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  int customerId;
+
+
     private String firstName;
     private String lastName;
     private String address;
     private Long phoneNumber;
     private String email;
     private String password;
+
+    @Enumerated(EnumType.STRING)
     private AccountStatus status;
+
+    @Nullable
+    @OneToOne(cascade = CascadeType.ALL)
+    @JsonManagedReference
+    @JoinColumn(name = "accountId")
+    private Account account;
+
+    @ManyToOne
+    @JoinColumn(name="bank_id")
     private Bank customerBranch;
     private Date createdOn;
+
+    public Customer(    ){
+
+    }
 
     public Customer(String firstName, String lastName, String address, Long phoneNumber, String email, String password, AccountStatus status, Bank customerBranch) {
 
@@ -39,9 +56,6 @@ public class Customer {
         this.createdOn = new Date();
     }
 
-    private int generateId() {
-        return (int) (System.currentTimeMillis() % Integer.MAX_VALUE);
-    }
 
     public int getCustomerId() {
         return customerId;
@@ -115,4 +129,11 @@ public class Customer {
         this.password = password;
     }
 
+    public @Nullable Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(@Nullable Account account) {
+        this.account = account;
+    }
 }
