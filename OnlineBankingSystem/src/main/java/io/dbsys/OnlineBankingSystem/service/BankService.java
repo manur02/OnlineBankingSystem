@@ -8,6 +8,8 @@ import io.dbsys.OnlineBankingSystem.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class BankService {
 
@@ -29,5 +31,12 @@ public class BankService {
         bank.setBankBranch(bankDto.getBankBranch());
         return bankRepository.save(bank);
     }
+
+
+
+    public List<BankAccountCountDto> getAccountCountsPerBank() {
+        return bankRepository.getBankAccountCounts();
+    }
+
 
 }
